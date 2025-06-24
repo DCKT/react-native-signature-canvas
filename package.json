@@ -1,5 +1,5 @@
 {
-  "name": "react-native-signature-canvas",
+  "name": "@dck/react-native-signature-canvas",
   "version": "4.7.3",
   "description": "React Native Signature Component based Canvas for Android && IOS && expo",
   "main": "index.js",

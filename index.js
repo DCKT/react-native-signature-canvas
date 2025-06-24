@@ -52,19 +52,19 @@ const SignatureView = forwardRef(
       minDistance = 5,
       nestedScrollEnabled = false,
       showsVerticalScrollIndicator = true,
-      onOK = () => { },
-      onEmpty = () => { },
-      onClear = () => { },
-      onUndo = () => { },
-      onRedo = () => { },
-      onDraw = () => { },
-      onErase = () => { },
-      onGetData = () => { },
-      onChangePenColor = () => { },
-      onChangePenSize = () => { },
-      onBegin = () => { },
-      onEnd = () => { },
-      onLoadEnd = () => { },
+      onOK = () => {},
+      onEmpty = () => {},
+      onClear = () => {},
+      onUndo = () => {},
+      onRedo = () => {},
+      onDraw = () => {},
+      onErase = () => {},
+      onGetData = () => {},
+      onChangePenColor = () => {},
+      onChangePenSize = () => {},
+      onBegin = () => {},
+      onEnd = () => {},
+      onLoadEnd = () => {},
       overlayHeight = 0,
       overlayWidth = 0,
       overlaySrc = null,
@@ -76,8 +76,9 @@ const SignatureView = forwardRef(
       webStyle = "",
       webviewContainerStyle = null,
       androidLayerType = "hardware",
+      onRenderError,
     },
-    ref
+    ref,
   ) => {
     const [loading, setLoading] = useState(true);
     const webViewRef = useRef();
@@ -86,37 +87,37 @@ const SignatureView = forwardRef(
       const htmlContentValue = customHtml ? customHtml : htmlContent;
       injectedJavaScript = injectedJavaScript.replace(
         /<%autoClear%>/g,
-        autoClear
+        autoClear,
       );
       injectedJavaScript = injectedJavaScript.replace(
         /<%trimWhitespace%>/g,
-        trimWhitespace
+        trimWhitespace,
       );
       injectedJavaScript = injectedJavaScript.replace(
         /<%imageType%>/g,
-        imageType
+        imageType,
       );
       injectedJavaScript = injectedJavaScript.replace(/<%dataURL%>/g, dataURL);
       injectedJavaScript = injectedJavaScript.replace(
         /<%penColor%>/g,
-        penColor
+        penColor,
       );
       injectedJavaScript = injectedJavaScript.replace(
         /<%backgroundColor%>/g,
-        backgroundColor
+        backgroundColor,
       );
       injectedJavaScript = injectedJavaScript.replace(/<%dotSize%>/g, dotSize);
       injectedJavaScript = injectedJavaScript.replace(
         /<%minWidth%>/g,
-        minWidth
+        minWidth,
       );
       injectedJavaScript = injectedJavaScript.replace(
         /<%maxWidth%>/g,
-        maxWidth
+        maxWidth,
       );
       injectedJavaScript = injectedJavaScript.replace(
         /<%minDistance%>/g,
-        minDistance
+        minDistance,
       );
 
       let html = htmlContentValue(injectedJavaScript);
@@ -239,14 +240,14 @@ const SignatureView = forwardRef(
         changePenColor: (color) => {
           if (webViewRef.current) {
             webViewRef.current.injectJavaScript(
-              "changePenColor('" + color + "');true;"
+              "changePenColor('" + color + "');true;",
             );
           }
         },
         changePenSize: (minW, maxW) => {
           if (webViewRef.current) {
             webViewRef.current.injectJavaScript(
-              "changePenSize(" + minW + "," + maxW + ");true;"
+              "changePenSize(" + minW + "," + maxW + ");true;",
             );
           }
         },
@@ -256,16 +257,19 @@ const SignatureView = forwardRef(
           }
         },
       }),
-      [webViewRef]
+      [webViewRef],
     );
 
-    const renderError = ({ nativeEvent }) =>
+    const renderError = ({ nativeEvent }) => {
+      onRenderError(nativeEvent);
+
       console.warn("WebView error: ", nativeEvent);
+    };
 
     const handleLoadEnd = () => {
       setLoading(false);
       onLoadEnd();
-    }
+    };
 
     return (
       <View style={[styles.webBg, style]}>
@@ -280,7 +284,7 @@ const SignatureView = forwardRef(
           ref={webViewRef}
           useWebKit={true}
           source={source}
-          originWhitelist={['*']}
+          originWhitelist={["*"]}
           onMessage={getSignature}
           javaScriptEnabled={true}
           onError={renderError}
@@ -295,7 +299,7 @@ const SignatureView = forwardRef(
         )}
       </View>
     );
-  }
+  },
 );
 
 export default SignatureView;
